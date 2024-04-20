@@ -1,16 +1,14 @@
 package com.amanda.readlog.service;
 
+import com.amanda.readlog.exception.BookNotFoundException;
 import com.amanda.readlog.model.Book;
 import com.amanda.readlog.repository.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -33,7 +31,8 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Optional<Book> findOne(Long id) {
-        return bookRepository.findById(id);
+        return Optional.ofNullable(bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book does not exists")));
     }
 
     @Override
@@ -54,7 +53,7 @@ public class BookServiceImpl implements BookService{
            Optional.ofNullable(bookEntity.getNumberOfPages()).ifPresent(existingBook::setNumberOfPages);
            Optional.ofNullable(bookEntity.getRating()).ifPresent(existingBook::setRating);
            return bookRepository.save(existingBook);
-       }).orElseThrow(() -> new RuntimeException(("Book does not exists")));
+       }).orElseThrow(() -> new BookNotFoundException("Book does not exists"));
     }
 
     @Override
