@@ -1,8 +1,10 @@
 package com.amanda.readlog.controller;
 
 import com.amanda.readlog.dto.ClubDto;
+import com.amanda.readlog.dto.ReadingDto;
 import com.amanda.readlog.mappers.Mapper;
 import com.amanda.readlog.model.Club;
+import com.amanda.readlog.model.Reading;
 import com.amanda.readlog.service.ClubService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,12 @@ public class ClubController {
 
     private ClubService clubService;
     private Mapper<Club, ClubDto> clubMapper;
+    private Mapper<Reading, ReadingDto> readingMapper;
 
-    public ClubController(ClubService clubService, Mapper<Club, ClubDto> clubMapper) {
+    public ClubController(ClubService clubService, Mapper<Club, ClubDto> clubMapper, Mapper<Reading, ReadingDto> readingMapper) {
         this.clubService = clubService;
         this.clubMapper = clubMapper;
+        this.readingMapper = readingMapper;
     }
 
     @PostMapping
@@ -44,5 +48,13 @@ public class ClubController {
     public ResponseEntity<String> addMemberToClub(@PathVariable("clubId") Long clubId, @PathVariable("userId") Long userId) {
         clubService.addMemberToClub(clubId, userId);
         return new ResponseEntity<String>("User added to club.", HttpStatus.OK);
+    }
+
+    @PostMapping(path = "{clubId}/reading")
+    public ResponseEntity<String> addCurrentReading(@PathVariable Long clubId, @RequestBody ReadingDto reading){
+        Reading readingEntity = readingMapper.mapFrom(reading);
+        clubService.addCurrentReading(clubId, readingEntity);
+
+        return new ResponseEntity<String>("Reading added successfully", HttpStatus.OK);
     }
 }

@@ -4,6 +4,4 @@ import com.amanda.readlog.model.User;
 
 public interface UserService {
     User save(User user);
-
-
 }

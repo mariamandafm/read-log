@@ -4,8 +4,10 @@ import com.amanda.readlog.exception.BookNotFoundException;
 import com.amanda.readlog.exception.ClubNotFoundException;
 import com.amanda.readlog.exception.UserNotFoundException;
 import com.amanda.readlog.model.Club;
+import com.amanda.readlog.model.Reading;
 import com.amanda.readlog.model.User;
 import com.amanda.readlog.repository.ClubRepository;
+import com.amanda.readlog.repository.ReadingRepository;
 import com.amanda.readlog.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,12 @@ public class ClubServiceImpl implements ClubService{
 
     private final UserRepository userRepository;
 
-    public ClubServiceImpl(ClubRepository clubRepository, UserRepository userRepository) {
+    private final ReadingRepository readingRepository;
+
+    public ClubServiceImpl(ClubRepository clubRepository, UserRepository userRepository, ReadingRepository readingRepository) {
         this.clubRepository = clubRepository;
         this.userRepository = userRepository;
+        this.readingRepository = readingRepository;
     }
 
     @Override
@@ -54,5 +59,15 @@ public class ClubServiceImpl implements ClubService{
 
         clubRepository.save(club);
         userRepository.save(user);
+    }
+
+    @Override
+    public void addCurrentReading(Long clubId, Reading readingEntity) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new ClubNotFoundException("Club not found with id: "+clubId));
+
+        club.setCurrentReading(readingEntity);
+
+        clubRepository.save(club);
     }
 }

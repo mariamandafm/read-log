@@ -50,6 +50,10 @@ public class Club {
     )
     private Set<User> members = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reading_id", referencedColumnName = "id")
+    private Reading currentReading;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "club_tags", joinColumns = @JoinColumn(name = "club_id"))
