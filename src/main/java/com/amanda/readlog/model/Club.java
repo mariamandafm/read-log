@@ -1,13 +1,9 @@
 package com.amanda.readlog.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -39,19 +35,20 @@ public class Club {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
+    @NonNull
     private User creator;
 
     private String name;
     private String description;
     private Date creation_date;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "club_members",
             joinColumns = @JoinColumn(name = "club_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> members;
+    private Set<User> members = new HashSet<>();
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

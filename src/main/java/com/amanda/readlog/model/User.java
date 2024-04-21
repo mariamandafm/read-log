@@ -1,13 +1,13 @@
 package com.amanda.readlog.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,8 +21,8 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany(mappedBy = "members")
-    private Set<Club> clubs;
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private Set<Club> clubs = new HashSet<>();
 
     @OneToMany(mappedBy = "creator")
     private Set<Club> clubs_created;

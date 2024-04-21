@@ -16,10 +16,10 @@ import java.util.Set;
 @Builder
 public class ClubDto {
     private Integer id;
-    private User creator;
+    private UserDto creator;
     private String name;
     private String description;
     private Date creation_date;
-    private Set<User> members;
+    private Set<UserDto> members;
     private Set<Club.Tag> tags;
 }
