@@ -54,6 +54,10 @@ public class Club {
     @JoinColumn(name = "reading_id", referencedColumnName = "id")
     private Reading currentReading;
 
+    @OneToMany
+    @JoinColumn(name = "club_id")
+    private List<Reading> previousReadings = new ArrayList<>();
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "club_tags", joinColumns = @JoinColumn(name = "club_id"))

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -56,5 +57,15 @@ public class ClubController {
         clubService.addCurrentReading(clubId, readingEntity);
 
         return new ResponseEntity<String>("Reading added successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{clubId}/previous-readings")
+    public ResponseEntity<List<ReadingDto>> getPreviousReadings(@PathVariable Long clubId){
+        List<Reading> previousReadings = clubService.getPreviousReadings(clubId);
+        List<ReadingDto> previousReadingsDto = previousReadings.stream()
+                .map(reading -> readingMapper.mapTo(reading))
+                .toList();
+
+        return new ResponseEntity<List<ReadingDto>>(previousReadingsDto, HttpStatus.OK);
     }
 }

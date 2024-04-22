@@ -12,6 +12,7 @@ import com.amanda.readlog.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,8 +67,17 @@ public class ClubServiceImpl implements ClubService{
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new ClubNotFoundException("Club not found with id: "+clubId));
 
+        club.getPreviousReadings().add(club.getCurrentReading());
         club.setCurrentReading(readingEntity);
 
         clubRepository.save(club);
+    }
+
+    @Override
+    public List<Reading> getPreviousReadings(Long clubId) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new ClubNotFoundException("Club not found with id: "+clubId));
+
+        return club.getPreviousReadings();
     }
 }
