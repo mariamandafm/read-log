@@ -14,7 +14,7 @@ A API Read-Log é uma API RESTful construída com Spring que permite aos usuári
 
 3. **Definir Leitura Atual**: Envie uma requisição POST para `/clubs/{idClub}/reading` com o ID do clube na variável de path e os detalhes da leitura no corpo da requisição.
 
-4. **Criar Tópico**(TO-DO): Envie uma requisição POST para `/clubs/{idClube}/topics` com o ID do clube na variável de path e os detalhes do tópico no corpo da requisição.
+4. **Criar Tópico**(TO-DO): Envie uma requisição POST para `/clubs/{idClub}/topics` com o ID do clube na variável de path e os detalhes do tópico no corpo da requisição.
 
 ### Dependências
 
